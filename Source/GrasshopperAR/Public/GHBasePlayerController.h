@@ -16,13 +16,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FToggleMasterUiDelegate);
 UCLASS()
 class GRASSHOPPERAR_API AGHBasePlayerController : public APlayerController
 {
+	GENERATED_BODY()
+	
+public:
     AGHBasePlayerController();
     AGHBasePlayerController(const FObjectInitializer& ObjectInitializer);
     ~AGHBasePlayerController();
     
-	GENERATED_BODY()
-	
-public:
     UPROPERTY(EditAnywhere)
     TSubclassOf<APawn> ghPawnClass;
     
@@ -44,6 +44,8 @@ public:
     UFUNCTION(BlueprintCallable)
     AGHPlayerState* getPlayerState();
     
+    UPROPERTY(EditAnywhere)
+    FString PlayerName;
     
     // exists lobby levels and loads specified game level
     UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
@@ -52,4 +54,11 @@ public:
     // unloads game levels and loads lobby levels
     UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
     void exitGameLevel();
+    
+    UFUNCTION(BlueprintCallable)
+    void SetNewPlayerName(FString name);
+    
+    UFUNCTION(Server, Reliable, BlueprintCallable)
+    void ServerSetPlayerName(const FString& currentName,
+                             const FString& newName);
 };
